@@ -28,6 +28,10 @@
     color: var(--blue);
 }
 
+.manageSelect{
+    width: 260px;
+}
+
 .add_card{
     width: 250px;
     height: 250px;

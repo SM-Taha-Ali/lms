@@ -13,7 +13,7 @@ const FeeDomain = () => {
 
   const ref = useRef(null)
 
-  const [fees, setfees] = useState({ label: "", type: "" })
+  const [fees, setfees] = useState({ label: "", type: "", amount:"" })
 
   const onChange = (e) => {
     try {
@@ -24,7 +24,7 @@ const FeeDomain = () => {
   }
 
   const updateClick = () => {
-    updatefee(fees._id, fees.label, fees.label, "fee", fees.type)
+    updatefee(fees._id, fees.label, fees.label, "fee", fees.type, fees.amount)
   }
 
   const feeUpdate = (currentfee) => {
@@ -34,7 +34,11 @@ const FeeDomain = () => {
 
   const handleClick = (e) => {
     e.preventDefault()
-    addfee(fees.label, fees.label, "fee", fees.type)
+    var fee_name = document.getElementById("fee_name");
+    var fee_amount = document.getElementById("fee_amount");
+    fee_name.value = ""
+    fee_amount.value = ""
+    addfee(fees.label, fees.label, "fee", fees.type, fees.amount)
     var fee = document.getElementById("fee")
     fee.value = ""
   }
@@ -84,16 +88,20 @@ const FeeDomain = () => {
                   <form>
                     <div className="mb-3">
                       <label htmlFor="exampleInputEmail1" className="form-label">Name</label>
-                      <input type="text" className="form-control" id="product_name" name='label' required onChange={onChange} value={fees.label} />
+                      <input type="text" className="form-control" id="fee_name" name='label' required onChange={onChange} value={fees.label} />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="exampleInputEmail1" className="form-label">Amount</label>
+                      <input type="text" className="form-control" id="fee_amount" name='amount' required onChange={onChange} value={fees.amount} />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="exampleInputEmail1" className="form-label">Type</label>
+                      {console.log(fees.type)}
                       <Select
-                        defaultValue={fee.type}
+                        defaultValue ={fees.type}
                         onChange={onChange}
                         options={fee_types}
                         width={100}
-                        name="type"
                       />
                     </div>
                   </form>
@@ -108,18 +116,20 @@ const FeeDomain = () => {
           <h1 className='mt-5'>Add fee</h1>
           <div className="my-5">
             <div className="row">
-              <div className="col-md-6 py-2">
+              <div className="col-md-4 py-2">
                 <input type="text" className="form-control" id="fee" name='label' placeholder='Fee Name' onChange={onChange} />
               </div>
-              <div className="col-md-6 py-2">
+              <div className="col-md-4 py-2">
                 <Select
-                  defaultValue={null}
                   onChange={onChange}
                   options={fee_types}
                   width={100}
                   name="type"
                   placeholder="Fee Type"
                 />
+              </div>
+              <div className="col-md-4 py-2">
+                <input type="text" className="form-control" id="fee" name='amount' placeholder='Fee Amount' onChange={onChange} />
               </div>
             </div>
             <div className="text-end py-4">
@@ -134,6 +144,7 @@ const FeeDomain = () => {
                   <th scope="col">#</th>
                   <th scope="col">Fee Name</th>
                   <th scope="col">Fee Type</th>
+                  <th scope="col">Fee Amount</th>
                   <th scope="col" className='text-center'>Action</th>
                 </tr>
               </thead>

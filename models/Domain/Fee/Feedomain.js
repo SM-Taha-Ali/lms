@@ -18,6 +18,10 @@ const FeedomainSchema = new Schema({
     type: {
         type: String,
         required: true
+    },
+    amount: {
+        type: String,
+        required: true
     }
 });
 

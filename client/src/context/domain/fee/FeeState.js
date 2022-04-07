@@ -23,14 +23,14 @@ const GlobalState = (props) => {
     }
 
 
-    const addfee = async (value, label, name, type) => {
+    const addfee = async (value, label, name, type, amount) => {
         // TODO API CALL
         const response = await fetch(`${apiUrl}/api/feedomain/add-feedomain`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ value, label, name, type })
+            body: JSON.stringify({ value, label, name, type, amount })
         });
         const countr = await response.json();
         setfee(fee.concat(countr))
@@ -39,13 +39,13 @@ const GlobalState = (props) => {
 
     //  Update Quantity
 
-    const updatefee = async (id, value, label, name, type) => {
+    const updatefee = async (id, value, label, name, type, amount) => {
         const response = await fetch(`${apiUrl}/api/feedomain/update-feedomain`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id, value, label, name, type })
+            body: JSON.stringify({ id, value, label, name, type, amount })
         });
 
         // Logic to edit in client side
@@ -59,6 +59,7 @@ const GlobalState = (props) => {
                 newfee[index].label = label;
                 newfee[index].name = name;
                 newfee[index].type = type;
+                newfee[index].amount = amount;
                 break;
             }
         }

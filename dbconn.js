@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 dotenv.config({path:"./config.env"})
 
-const mongoUri = process.env.DATABASEONLINE;
+const mongoUri = process.env.DATABASE;
 
 const connection = () => {
     mongoose.connect(mongoUri).then(()=>{

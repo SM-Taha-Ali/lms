@@ -13,7 +13,8 @@ async function addFeedomain(req, res) {
             value: req.body.value,
             label: req.body.label,
             name: req.body.name,
-            type: req.body.type
+            type: req.body.type,
+            amount: req.body.amount
         })
         // Sending the user object as a response
         success = true
@@ -45,11 +46,13 @@ async function updateFeedomain(req, res) {
         const label  = req.body.label;
         const name  = req.body.name;
         const type  = req.body.type;
+        const amount  = req.body.amount;
         const newItem = {};
         if (value) { newItem.value = value }
         if (label) { newItem.label = label }
         if (name) { newItem.name = name }
         if (type) { newItem.type = type }
+        if (amount) { newItem.type = amount }
         item = await Feedomain.findByIdAndUpdate(req.body.id, { $set: newItem }, { new: true })
         res.json(newItem);
     } catch (error) {

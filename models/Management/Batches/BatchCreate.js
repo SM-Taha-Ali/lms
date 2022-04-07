@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BatchSchema = new Schema({
-    batchname: {
-        type: String,
-        unique: true,
-        required: true
-    },
     subteafees: {
         type: Array,
         required: true
@@ -21,7 +16,23 @@ const BatchSchema = new Schema({
     end_date: {
         type: Date,
         required: true
-    }
+    },
+    group: {
+        type: String,
+        required: true
+    },
+    subgroup: {
+        type: String,
+        required: true
+    },
+    section: {
+        type: String,
+        required: true
+    },
+    class: {
+        type: String,
+        required: true
+    },
 });
 
 const Batch = mongoose.model('Batch', BatchSchema)

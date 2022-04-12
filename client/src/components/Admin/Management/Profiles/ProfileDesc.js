@@ -8,6 +8,10 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { styled } from '@mui/material/styles';
 import ModalListgroup from './ModalListgroup';
+import { Link } from 'react-router-dom'
+import './ProfileDesc.css'
+import { Outlet } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const ProfileDesc = () => {
 
@@ -18,6 +22,7 @@ const ProfileDesc = () => {
   const location = useLocation()
 
   const user = location.state.user;
+  // console.log(user)
 
   const context = useContext(subjectContext);
   const { subject, getsubject, addsubject, updatesubject, deletesubject } = context
@@ -49,7 +54,51 @@ const ProfileDesc = () => {
 
   return (
     <>
-      <div className="container">
+      <div className=" row containers my-3">
+        <div className=' col-md-4'>
+          <img
+            src='/images/profile_avatar.png'
+            alt=""
+            className="profile_desc_img"
+            style={{ height: '150px', width: '150px' }}
+          />
+          <div className="mx-2">
+
+            <h3 >{user.name}</h3>
+          </div>
+          {console.log(user)}
+
+        </div>
+        <div className='linked col md-4'>
+          <div className="first mx-3 my-5">
+
+            <Link className='btn btn-outline-primary my-5' aria-current="page" state={{ user: user }} to='/admin/management/adprofile/profiledesc/personaldescemp'><h3>Personal Details</h3></Link>
+          </div>
+          <div className="second mx-3 my-5">
+            {/* <Link className='links mx-5 my-5' aria-current="page" state={{user : user}} to='/admin/management/adprofile/profiledesc/academicdetailsemp'>Academic Details</Link> */}
+            <Link className='btn btn-outline-primary my-5' aria-current="page" state={{ user: user }} to='/admin/management/adprofile/profiledesc'><h3>Academic Details</h3></Link>
+
+          </div>
+        </div>
+        {/* <div className="col-md-2 mx-0 my-5 mx-3">
+
+          <Link className='nav-link' to='/admin/management/registration/PersonalDetails'>PERSONAL DETAILS</Link>
+        </div>
+
+        <div className="col-md-2 my-5 mx-3">
+
+          <Link className='nav-link' to='/Admin/Management/Registration/AcademicDetails'>ADDRESS DETAILS</Link>
+        </div> */}
+      </div>
+      <div className='container'>
+        <Outlet />
+      </div>
+
+
+
+
+
+      {/* <div className="container">
         <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
           Launch static backdrop modal
         </button>
@@ -79,25 +128,10 @@ const ProfileDesc = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="profile_desc_img_wrapper mt-4">
-          <img
-            src='/images/profile_avatar.png'
-            alt=""
-            className="profile_desc_img"
-          />
-          {/* <div className=''>
-            <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
-              <IconButton color="primary" aria-label="upload picture" component="span">
-                <PhotoCamera className='' />
-              </IconButton>
-            </label>
-          </div> */}
-        </div>
-        <h3 className="text-center">{user.name}</h3>
-        <div className="row g-0 mt-4">
-          <div className="col-lg-6 p-5">
+        </div> */}
+      {/* <h3 className="text-center">{user.name}</h3> */}
+      {/* <div className="row g-0 mt-4"> */}
+      {/* <div className="col-lg-6 p-5">
             <h4 className="text-center">PERSONAL DETAILS</h4>
             <div className="detail_body">
               <ul className="list-group">
@@ -169,8 +203,8 @@ const ProfileDesc = () => {
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="col-lg-6 p-5">
+          </div> */}
+      {/* <div className="col-lg-6 p-5">
             <h4 className="text-center">ACADEMIC DETAILS</h4>
             <div className="detail_body">
               <ul className="list-group">
@@ -219,8 +253,8 @@ const ProfileDesc = () => {
           <button className="btn btn-danger">
             <i className="fas fa-trash me-1"></i> Delete Profile
           </button>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </>
   );
 };

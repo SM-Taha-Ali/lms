@@ -6,8 +6,7 @@ import "../../Stylesheets/Profile.css"
 const ProfileCard = (props) => {
     const { user } = props
     return (
-        <div className='col-xl-3 col-lg-4 col-md-6 col-sm-12 py-3 d-flex flex-row justify-content-center px-4
-        '>
+        <div className='col-xl-3 col-lg-4 col-md-6 col-sm-12 py-3 d-flex flex-row justify-content-center px-4'>
             <Link
                 to='/admin/management/adprofile/profiledesc'
                 state={{ user: user }}

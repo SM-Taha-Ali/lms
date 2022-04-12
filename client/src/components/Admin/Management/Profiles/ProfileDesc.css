@@ -1,0 +1,20 @@
+.containers{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: baseline;
+    border: 2px solid black;
+    /* padding-top: 100px; */
+    /* justify-content: center; */
+}
+.links{
+    /* margin-top: 500px */
+    /* padding-top: 100px; */
+    /* display: inline; */
+
+}
+
+.linked{
+    display: flex;
+    flex-direction: row;
+}

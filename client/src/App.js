@@ -69,6 +69,8 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import PersonalDescEmp from './components/Admin/Management/Profiles/PersonalDescEmp';
+import AcademicDetailsEmp from './components/Admin/Management/Profiles/AcademicDetailsEmp';
 
 
 function App() {
@@ -120,7 +122,10 @@ function App() {
                                                       <Route path="adprofile" element={<AdProfile />} >
                                                         <Route path="stdprof" element={<StdProf />} />
                                                         <Route path="empprof" element={<EmpProf />} />
-                                                        <Route path="profiledesc" element={<ProfileDesc />} />
+                                                        <Route path="profiledesc" element={<ProfileDesc />} >
+                                                          <Route path='personaldescemp' exact element={<PersonalDescEmp/>} />
+                                                          <Route path='' exact element={<AcademicDetailsEmp/>} />
+                                                        </Route>
                                                         <Route path="profiledescstd" element={<ProfileDescStd />} />
                                                       </Route>
                                                     </Route>

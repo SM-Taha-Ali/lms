@@ -2,36 +2,41 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ScheduleSchema = new Schema({
-    period: {
+    startTime: {
         type: String,
         required: true,
         unique: true
     },
-    mon: {
+    endTime: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    monday: {
         type: String,
         required: true
     },
-    tue: {
+    tuesday: {
         type: String,
         required: true
     },
-    wed: {
+    wednesday: {
         type: String,
         required: true
     },
-    thur: {
+    thursday: {
         type: String,
         required: true
     },
-    fri: {
+    friday: {
         type: String,
         required: true
     },
-    sat: {
+    saturday: {
         type: String,
         required: true
     },
-    sun: {
+    sunday: {
         type: String,
         required: true
     }

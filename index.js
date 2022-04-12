@@ -40,6 +40,7 @@ app.use('/api/examdomain', require('./routes/domain/exam/examdomain'))
 // ok
 // Batches
 app.use('/api/batches', require('./routes/management/batches/batches'))
+app.use('/api/schedule', require('./routes/management/schedule'))
 
 
 const PORT = process.env.PORT || 5000

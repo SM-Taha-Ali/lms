@@ -19,6 +19,8 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import { Link } from 'react-router-dom'
 import "../../Stylesheets/batch.css"
+import { body } from 'express-validator';
+import TableSchedule from './TableSchedule';
 
 const ClassManage = () => {
 
@@ -28,6 +30,9 @@ const ClassManage = () => {
   useEffect(() => {
     getfee()
   }, [])
+  const firstmodal = useRef(null)
+  const firstmodalclose = useRef(null)
+
 
   const [selectedDate, handleDateChange] = useState(new
     Date());
@@ -44,9 +49,59 @@ const ClassManage = () => {
   const context = useContext(subBindContext);
   const { subBind, getsubBind, getsubOnlyBind, addsubBind, updatesubBind, deletesubBind } = context
 
+
+
   useEffect(() => {
-    getsubOnlyBind(subBinds.class, subBinds.group, subBinds.subgroup)
+    getsubOnlyBind(subBinds.class, subBinds.group, subBinds.subgroup);
+    getDataSchedule();
   }, [])
+
+  const [scData,setScData]=useState([])
+
+  const getDataSchedule = async()=>{
+    const host = "http://localhost:5000"
+    const response = await fetch(`${host}/api/schedule/get-Schedule`,{
+      method : 'GET',
+      headers:{
+        'Content-Type' : 'application/json'
+      }
+    })
+    const json = await response.json();
+    setScData(json);
+
+  }
+
+  const [period,setPeriod]=useState({
+    periodStartTime:'',
+    periodEndTime:'',
+    monday:"",
+    tuesday:"",
+    wednesday:"",
+    thursday:"",
+    friday:"",
+    saturday:"",
+    sunday:"",
+  })
+  const handleOnChange=(i,e)=>{
+    setPeriod({...period,[e.name]:i.value})
+  }
+
+  const handleScheduleSubmit=async()=>{
+    // console.log("bcdsvj")
+    const host = "http://localhost:5000"
+    const response = await fetch(`${host}/api/schedule/add-Schedule`,{
+      method :'POST',
+      headers :{
+        'Content-Type': 'application/json'
+      },
+      body :await JSON.stringify({startTime : period.periodStartTime ,endTime : period.periodEndTime, monday : period.monday , tuesday : period.tuesday , wednesday : period.wednesday , thursday : period.thursday , friday : period.friday , saturday : period.saturday , sunday : period.sunday })
+    })
+
+    firstmodalclose.current.click();
+    getDataSchedule()
+  
+  }
+
 
   const contextBatch = useContext(batchContext);
   const { batch, getbatch, addbatch, updatebatch, deletebatch } = contextBatch
@@ -120,6 +175,7 @@ const ClassManage = () => {
   });
 
   const onChange = (e) => {
+    // console.log(e.name)
     setsubBinds({ ...subBinds, [e.name]: e.value })
   }
 
@@ -185,14 +241,18 @@ const ClassManage = () => {
     { value: 'Monthly', label: 'Monthly', name: "type" },
   ];
 
-  const [periodSlot, setperiodSlot] = useState({start_time:"", end_time:"", day_sub:[{mon:"", tue:"", wed:"", thurs:"", fri:"", sat:"", sun:""}]})
+  const [periodSlot, setperiodSlot] = useState({ start_time: "", end_time: "", day_sub: [{ mon: "", tue: "", wed: "", thurs: "", fri: "", sat: "", sun: "" }] })
+
+
+
 
   const add_period = (e) => {
     e.preventDefault()
-    let start_time = String(periodSlot.start_time).split(' ')[4]
-    let end_time = String(periodSlot.end_time).split(' ')[4]
-    console.log(start_time)
-    console.log(end_time)
+    // let start_time = String(periodSlot.start_time).split(' ')[4]
+    // let end_time = String(periodSlot.end_time).split(' ')[4]
+    // console.log(start_time)
+    // console.log(end_time)
+    firstmodal.current.click();
   }
 
   return (
@@ -323,7 +383,6 @@ const ClassManage = () => {
               <th scope="col">Subject</th>
               <th scope="col">Teacher</th>
               <th scope="col">Fee</th>
-              {/* <th scope="col">Ratio</th> */}
               <th scope="col" className='text-center'>Confirm</th>
             </tr>
           </thead>
@@ -374,7 +433,7 @@ const ClassManage = () => {
                     label="Start time"
                     value={periodSlot.start_time}
                     onChange={(newValue) => {
-                      setperiodSlot({start_time:newValue});
+                      setperiodSlot({ start_time: newValue });
                     }}
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -417,10 +476,10 @@ const ClassManage = () => {
               <th scope="col" className='text-center'>Action</th>
             </tr>
           </thead>
-          <tbody>
-            {fee.map((countr, i) => {
-              return <ClassmanSched key={i} countr={countr} index={i} getfee={getfee} deletefee={deletefee} feeUpdate={feeUpdate} />
-            })}
+          <tbody >
+                {scData.map((element , i)=>{
+                  return <TableSchedule getDataSchedule = {getDataSchedule} element = {element} subJects = {subJects}/>
+                })}
           </tbody>
         </table>
       </div>
@@ -428,6 +487,99 @@ const ClassManage = () => {
 
       <div className="my-5 text-end">
         <button className="btn btn_dark_blue text-white" onClick={createBatch} disabled={done}><i className="fas fa-plus me-1"></i> Create Batch</button>
+      </div>
+
+
+      {/*------------------------------- Modal ---------------------------------------------------------------------*/}
+      <div className="container">
+        <button type="button" ref={firstmodal} className="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        </button>
+
+        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-xl">
+            <div className="modal-content p-4">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">Add Schedule</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="row">
+                <div className="label text-center my-2">
+                <input className='mx-4' onChange={(e)=>{setPeriod({...period ,[e.target.name]:e.target.value})}} type="time" id="appt" name="periodStartTime"/>
+                  <label htmlFor='label'><h3>Select Time</h3></label>
+                  <input className='mx-4' onChange={(e)=>{setPeriod({...period ,[e.target.name]:e.target.value})}} type="time" id="appt" name="periodEndTime"/>
+
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='monday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select monday's period"
+                  />
+
+
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='tuesday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select tuesday's period"
+                  />
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='wednesday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select wednesday's period"
+                  />
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='thursday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select thursday's period"
+                  />
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='friday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select friday's period"
+                  />
+                </div>
+                <div className="col-md-3 py-2">
+                  <Select
+                    name='saturday'
+                    defaultValue={null}
+                    onChange={handleOnChange}
+                    options={subJects}
+                    width={100}
+                    placeholder="Select saturday's period"
+                  />
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" ref={firstmodalclose} data-bs-dismiss="modal">Close</button>
+                <button type="button" onClick={handleScheduleSubmit}  className="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

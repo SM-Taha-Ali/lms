@@ -1,4 +1,4 @@
-const Schedule = require('../../../models/Management/schedule/schedule');
+const Schedule = require('../../../models/Management/Schedule/Schedule');
 
 const addSchedule=async(req, res)=>{
     // Check whether the user with this email already exists

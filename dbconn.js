@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 dotenv.config({path:"./config.env"})
 
-const mongoUri = process.env.DATABASE;
+const mongoUri = "mongodb+srv://clixicon:skyline123@cluster0.a74at.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 const connection = () => {
     mongoose.connect(mongoUri).then(()=>{
